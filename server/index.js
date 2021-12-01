@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
     if (user) {
       io.to(user.room).emit('message', {
         user: 'AutoMod',
-        test: `${user.name} has left.`,
+        message: `${user.name} has left.`,
       });
       io.to(user.room).emit('roomData', {
         room: user,
