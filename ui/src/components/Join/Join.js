@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { SocketContext } from '../../contexts/SocketProvider';
 
 import './Join.css';
 
 const Join = () => {
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
+  const { name, room, setName, setRoom } = useContext(SocketContext);
 
   return (
     <div className="joinOuterContainer">
@@ -29,7 +29,7 @@ const Join = () => {
         </div>
         <Link
           onClick={(e) => (!name || !room ? e.preventDefault() : null)}
-          to={`/chat?name=${name}&room=${room}`}
+          to={`/chatroom`}
         >
           <button className="button mt-20" type="submit">
             Sign In

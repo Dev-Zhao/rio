@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import queryString from 'query-string';
+import { Link } from 'react-router-dom';
 
 import InfoBar from './InfoBar/InfoBar';
 import Input from './Input/Input';
@@ -11,27 +10,11 @@ import { SocketContext } from '../../contexts/SocketProvider';
 import './Chat.css';
 
 const Chat = () => {
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState();
-  const { socket } = useContext(SocketContext);
-
-  const search = useLocation().search;
-
-  useEffect(() => {
-    const { name, room } = queryString.parse(search);
-
-    setName(name);
-    setRoom(room);
-
-    socket.emit('join', { name, room }, (err) => {
-      setError(err);
-      console.log(err);
-    });
-  }, [search]);
+  const { socket, name, room } = useContext(SocketContext);
 
   useEffect(() => {
     socket.on('message', (message) => {
@@ -40,7 +23,7 @@ const Chat = () => {
     return () => {
       socket.off('message');
     };
-  }, [messages]);
+  }, [socket, messages]);
 
   useEffect(() => {
     socket.on('roomData', ({ users }) => {
@@ -50,7 +33,7 @@ const Chat = () => {
     return () => {
       socket.off('roomData');
     };
-  }, [users]);
+  }, [socket, users]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -78,7 +61,7 @@ const Chat = () => {
         ) : (
           <React.Fragment>
             <h1>Sorry... Username is taken!</h1>
-            <Link to={`/`}>
+            <Link to={`/join`}>
               <button className="button mt-20" type="submit">
                 Go Back
               </button>

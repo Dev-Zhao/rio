@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
-import queryString from 'query-string';
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { SocketContext } from '../../contexts/SocketProvider';
 
 import './Whiteboard.css';
@@ -29,17 +27,14 @@ const throttle = (callback, delay) => {
 };
 
 const Whiteboard = (props) => {
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
   const [drawing, setDrawing] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const canvasRef = useRef();
   const posRef = useRef(pos);
 
-  const search = useLocation().search;
-  const { socket } = useContext(SocketContext);
+  const { socket, name, room } = useContext(SocketContext);
 
-  const drawLine = (x0, y0, x1, y1, emit) => {
+  const drawLine = useCallback((x0, y0, x1, y1, emit) => {
     let canvas = canvasRef.current;
     let ctx = canvas.getContext('2d');
 
@@ -69,18 +64,9 @@ const Whiteboard = (props) => {
       x1: x1,
       y1: y1,
     });
-  };
+  }, [socket]);
 
   useEffect(() => {
-    const { name, room } = queryString.parse(search);
-
-    setName(name);
-    setRoom(room);
-
-    socket.emit('join', { name, room }, (err) => {
-      console.log(err);
-    });
-
     socket.on('draw', ({ x0, y0, x1, y1 }) => {
       drawLine(x0, y0, x1, y1, false);
     });
@@ -88,7 +74,7 @@ const Whiteboard = (props) => {
     return () => {
       socket.off('draw');
     };
-  }, [search, socket]);
+  }, [socket, name, room, drawLine]);
 
   useEffect(() => {
     posRef.current = pos;
@@ -121,7 +107,7 @@ const Whiteboard = (props) => {
         capture: true,
       });
     };
-  }, [drawing, socket]);
+  }, [drawing, socket, drawLine]);
 
   useEffect(() => {
     let canvas = canvasRef.current;
