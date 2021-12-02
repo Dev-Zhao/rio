@@ -51,6 +51,13 @@ io.on('connection', (socket) => {
     callback();
   });
 
+  socket.on('draw', ({x0, y0, x1, y1}, callback) => {
+    const user = getUser(socket.id);
+    if (!user) { return; }
+    socket.broadcast.to(user.room).emit('draw', {x0, y0, x1, y1});
+    if (callback) callback();
+  });
+
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
     if (user) {

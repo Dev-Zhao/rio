@@ -1,6 +1,10 @@
 const users = [];
 
 const addUser = ({ id, name, room }) => {
+  if (!name || !room) {
+    return { error: 'Username or room is undefined' };
+  }
+
   name = name.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
