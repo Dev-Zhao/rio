@@ -11,9 +11,16 @@ const router = require('./router');
 
 const app = express();
 const server = http.createServer(app);
+const whitelist = ['https://rio-client.herokuapp.com', 'http://localhost:3000'];
 const io = socketio(server, {
   cors: {
-    origin: 'https://rio-client.herokuapp.com',
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Origin not allowed by CORS'));
+      }
+    },
     methods: ['GET', 'POST'],
   },
 });
@@ -58,10 +65,10 @@ io.on('connection', (socket) => {
     if (callback) callback();
   });
 
-  socket.on('draw', ({x0, y0, x1, y1, color}, callback) => {
+  socket.on('clear', (data, callback) => {
     const user = getUser(socket.id);
     if (!user) { return; }
-    socket.broadcast.to(user.room).emit('draw', {x0, y0, x1, y1, color});
+    socket.broadcast.to(user.room).emit('clear');
     if (callback) callback();
   });
 
