@@ -184,7 +184,7 @@ const Whiteboard = (props) => {
   }, []);
 
   return (
-    <div class="whiteboard-container">
+    <div className="whiteboard-container">
       <canvas ref={canvasRef} className="whiteboard"></canvas>
       <div className="toolbar">
         <input
@@ -193,9 +193,9 @@ const Whiteboard = (props) => {
           value={color}
           onChange={(event) => setColor(event.target.value)}
         ></input>
-        <label for="color">Change color</label>
+        <label htmlFor="color">Change color</label>
         <br/>
-        <button class="clear" onClick={() => clearScreen(true)}>Clear Screen</button>
+        <button className="clear" onClick={() => clearScreen(true)}>Clear Screen</button>
       </div>
     </div>
   );
