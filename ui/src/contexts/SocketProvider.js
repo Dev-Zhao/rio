@@ -8,7 +8,7 @@ const SocketProvider = ({ children }) => {
   const [room, setRoom] = useState("");
 
   // we use a ref to store the socket as it won't be updated frequently
-  const socketRef = useRef(io('https://rio-server.herokuapp.com/'));
+  const socketRef = useRef(io('https://rio-server.herokuapp.com'));
 
   // When the Provider mounts, initialize it 👆
   // and register a few listeners 👇

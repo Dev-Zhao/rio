@@ -1,6 +1,6 @@
 .whiteboard-container {
   display: grid;
-  grid-template-rows: 0.8fr 0.2fr;
+  grid-template-rows: 0.95fr 0.1fr;
   grid-template-areas:
     "whiteboard"
     "toolbar";
@@ -8,6 +8,7 @@
 
 .whiteboard {
   border: 5px solid black;
+  width: 100%;
   grid-area: whiteboard;
 }
 

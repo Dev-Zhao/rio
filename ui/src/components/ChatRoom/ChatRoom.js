@@ -22,9 +22,11 @@ const ChatRoom = () => {
       <a href="/join"><button>Go back</button></a>
     </div>
   ) : (
-    <div class="chatroom">
-      <Whiteboard className="whiteboard" />
-      <Chat className="chat" />
+    <div className="chatroom-container">
+      <div className="chatroom">
+        <Whiteboard className="whiteboard" />
+        <Chat className="chat" />
+      </div>
     </div>
   );
 };
