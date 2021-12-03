@@ -51,10 +51,10 @@ io.on('connection', (socket) => {
     callback();
   });
 
-  socket.on('draw', ({x0, y0, x1, y1}, callback) => {
+  socket.on('draw', ({x0, y0, x1, y1, color}, callback) => {
     const user = getUser(socket.id);
     if (!user) { return; }
-    socket.broadcast.to(user.room).emit('draw', {x0, y0, x1, y1});
+    socket.broadcast.to(user.room).emit('draw', {x0, y0, x1, y1, color});
     if (callback) callback();
   });
 

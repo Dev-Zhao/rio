@@ -1,5 +1,18 @@
+.whiteboard-container {
+  display: grid;
+  grid-template-rows: 0.8fr 0.2fr;
+  grid-template-areas:
+    "whiteboard"
+    "toolbar";
+}
+
 .whiteboard {
-  width: 90%;
-  margin: 20px;
   border: 5px solid black;
+  grid-area: whiteboard;
+}
+
+.toolbar {
+  padding: 10px;
+  background: gray;
+  grid-area: toolbar;
 }

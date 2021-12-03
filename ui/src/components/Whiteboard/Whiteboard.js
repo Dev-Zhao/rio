@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useCallback,
+} from 'react';
 import { SocketContext } from '../../contexts/SocketProvider';
 
 import './Whiteboard.css';
@@ -28,47 +34,52 @@ const throttle = (callback, delay) => {
 
 const Whiteboard = (props) => {
   const [drawing, setDrawing] = useState(false);
+  const [color, setColor] = useState('#c0392b');
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const canvasRef = useRef();
   const posRef = useRef(pos);
 
   const { socket, name, room } = useContext(SocketContext);
 
-  const drawLine = useCallback((x0, y0, x1, y1, emit) => {
-    let canvas = canvasRef.current;
-    let ctx = canvas.getContext('2d');
+  const drawLine = useCallback(
+    (x0, y0, x1, y1, color, emit) => {
+      let canvas = canvasRef.current;
+      let ctx = canvas.getContext('2d');
 
-    // The size of canvas shown on the page could be different
-    // from the size of underlying bitmap used by canvas,
-    // we must account for this to draw at the correct location
-    let rect = canvas.getBoundingClientRect();
-    let scaleX = canvas.width / rect.width;
-    let scaleY = canvas.height / rect.height;
+      // The size of canvas shown on the page could be different
+      // from the size of underlying bitmap used by canvas,
+      // we must account for this to draw at the correct location
+      let rect = canvas.getBoundingClientRect();
+      let scaleX = canvas.width / rect.width;
+      let scaleY = canvas.height / rect.height;
 
-    ctx.beginPath();
-    ctx.moveTo(x0 * scaleX, y0 * scaleY);
-    ctx.lineTo(x1 * scaleX, y1 * scaleY);
-    ctx.lineWidth = 5;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = '#c0392b';
-    ctx.stroke();
-    ctx.closePath();
+      ctx.beginPath();
+      ctx.moveTo(x0 * scaleX, y0 * scaleY);
+      ctx.lineTo(x1 * scaleX, y1 * scaleY);
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = color;
+      ctx.stroke();
+      ctx.closePath();
 
-    if (!emit) {
-      return;
-    }
+      if (!emit) {
+        return;
+      }
 
-    socket.emit('draw', {
-      x0: x0,
-      y0: y0,
-      x1: x1,
-      y1: y1,
-    });
-  }, [socket]);
+      socket.emit('draw', {
+        x0,
+        y0,
+        x1,
+        y1,
+        color,
+      });
+    },
+    [socket]
+  );
 
   useEffect(() => {
-    socket.on('draw', ({ x0, y0, x1, y1 }) => {
-      drawLine(x0, y0, x1, y1, false);
+    socket.on('draw', ({ x0, y0, x1, y1, color }) => {
+      drawLine(x0, y0, x1, y1, color, false);
     });
 
     return () => {
@@ -85,12 +96,17 @@ const Whiteboard = (props) => {
       if (!drawing) {
         return;
       }
-      let mousePos = getMousePos(canvasRef.current, event.clientX, event.clientY);
+      let mousePos = getMousePos(
+        canvasRef.current,
+        event.clientX,
+        event.clientY
+      );
       drawLine(
         posRef.current.x,
         posRef.current.y,
         mousePos.x,
         mousePos.y,
+        color,
         true
       );
       setPos({ x: mousePos.x, y: mousePos.y });
@@ -107,7 +123,7 @@ const Whiteboard = (props) => {
         capture: true,
       });
     };
-  }, [drawing, socket, drawLine]);
+  }, [drawing, socket, drawLine, color]);
 
   useEffect(() => {
     let canvas = canvasRef.current;
@@ -150,7 +166,20 @@ const Whiteboard = (props) => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="whiteboard"></canvas>;
+  return (
+    <div class="whiteboard-container">
+      <canvas ref={canvasRef} className="whiteboard"></canvas>
+      <div className="toolbar">
+        <input
+          type="color"
+          className="color"
+          value="#e66465"
+          onChange={(event) => setColor(event.target.value)}
+        ></input>
+        <label for="color">Change color</label>
+      </div>
+    </div>
+  );
 };
 
 export default Whiteboard;
