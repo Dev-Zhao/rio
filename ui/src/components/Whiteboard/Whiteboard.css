@@ -9,6 +9,7 @@
 .whiteboard {
   border: 3px solid #E27188;
   width: 100%;
+  height: 100%;
   grid-area: whiteboard;
 }
 
