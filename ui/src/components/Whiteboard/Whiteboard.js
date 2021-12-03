@@ -41,6 +41,17 @@ const Whiteboard = (props) => {
 
   const { socket, name, room } = useContext(SocketContext);
 
+  const clearScreen = useCallback((emit) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (!emit){ return; }
+
+    socket.emit("clear");
+  }, [socket]);
+
   const drawLine = useCallback(
     (x0, y0, x1, y1, color, emit) => {
       let canvas = canvasRef.current;
@@ -76,6 +87,12 @@ const Whiteboard = (props) => {
     },
     [socket]
   );
+
+  useEffect(() => {
+    socket.on('clear', () => {
+      clearScreen(false);
+    });
+  }, [clearScreen]);
 
   useEffect(() => {
     socket.on('draw', ({ x0, y0, x1, y1, color }) => {
@@ -173,10 +190,12 @@ const Whiteboard = (props) => {
         <input
           type="color"
           className="color"
-          value="#e66465"
+          value={color}
           onChange={(event) => setColor(event.target.value)}
         ></input>
         <label for="color">Change color</label>
+        <br/>
+        <button class="clear" onClick={() => clearScreen(true)}>Clear Screen</button>
       </div>
     </div>
   );

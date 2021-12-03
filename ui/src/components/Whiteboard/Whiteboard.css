@@ -7,7 +7,7 @@
 }
 
 .whiteboard {
-  border: 5px solid black;
+  border: 3px solid #E27188;
   width: 100%;
   grid-area: whiteboard;
 }
@@ -16,4 +16,15 @@
   padding: 10px;
   background: gray;
   grid-area: toolbar;
+}
+
+.toolbar label {
+  color: white !important;
+  margin-left: 5px !important;
+  font-size: 25px;
+}
+
+.clear {
+  margin-top: 5px;
+  font-size: 20px;
 }

@@ -1,5 +1,6 @@
 .messages {
   padding: 5% 0;
-  overflow: scroll;
+  overflow: auto;
   flex: auto;
+  max-height: 100%;
 }
