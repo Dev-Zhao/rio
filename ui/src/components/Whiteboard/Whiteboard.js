@@ -92,7 +92,7 @@ const Whiteboard = (props) => {
     socket.on('clear', () => {
       clearScreen(false);
     });
-  }, [clearScreen]);
+  }, [socket, clearScreen]);
 
   useEffect(() => {
     socket.on('draw', ({ x0, y0, x1, y1, color }) => {

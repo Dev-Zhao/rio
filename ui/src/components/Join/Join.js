@@ -10,7 +10,9 @@ const Join = () => {
   return (
     <div className="joinOuterContainer">
       <div className="joinInnerContainer">
-        <h1 className="heading">Join a Room</h1>
+        <h1 className="heading">Welcome to Rio</h1>
+        <h3>Enter a room to begin drawing/chatting!</h3>
+        <h3>Your friends can join you using the same room number</h3>
         <div>
           <input
             placeholder="Name"

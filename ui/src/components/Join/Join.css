@@ -18,7 +18,8 @@ html, body {
   text-align: center;
   height: 100vh;
   align-items: center;
-  background-color: #1A1A1D;
+  background: url("./patternbg2.png") #2C1338;
+  background-size: cover;
 }
 
 .joinInnerContainer {
@@ -36,6 +37,10 @@ html, body {
   font-size: 2.5em;
   padding-bottom: 10px;
   border-bottom: 2px solid white;
+}
+
+h3 {
+  color: white;
 }
 
 .button {
