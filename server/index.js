@@ -13,7 +13,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: 'https://rio-client.herokuapp.com/',
+    origin: 'https://rio-client.herokuapp.com',
     methods: ['GET', 'POST'],
   },
 });
