@@ -11,8 +11,8 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/join" exact element={<Join />} />
-        <Route path="/chatroom" element={(!name || !room) ? <Navigate to="/join" /> : <ChatRoom />} />
+        <Route path="/" exact element={<Join />} />
+        <Route path="/chatroom" element={(!name || !room) ? <Navigate to="/" /> : <ChatRoom />} />
       </Routes>
     </Router>
   );
