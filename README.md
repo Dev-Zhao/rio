@@ -1,5 +1,5 @@
 # rio
-URL: https://rio-client.herokuapp.com
+Try it out: https://rio-client.herokuapp.com
 
 Ephemeral chat and drawing application.
 Zero data collection! Absolutely private!
